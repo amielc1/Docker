@@ -6,10 +6,11 @@ using Serilog.Events;
 
 var name = typeof(Program).Assembly.GetName().Name;
 Log.Logger = new LoggerConfiguration()
-    .MinimumLevel.Override("Microsoft",LogEventLevel.Information)
+    .MinimumLevel.Override("Microsoft", LogEventLevel.Information)
     .Enrich.FromLogContext()
     .Enrich.WithMachineName()
-    .Enrich.WithProperty("Assembly",name)
+    .Enrich.WithProperty("Assembly", name)
+    .WriteTo.Seq(serverUrl:"http://host.docker.internal:5341")
     .WriteTo.Console()
     .CreateLogger();
 

@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Serilog;
 using Store.Api.ApiModels;
 using Store.Api.Interfaces;
 
@@ -18,6 +19,8 @@ namespace Store.Api.Controllers
         [HttpGet]
         public IEnumerable<Product> GetProducts(string category = "all")
         {
+            Log.ForContext("Category", category)
+                .Information("Start GetProducts");
             return _productLogic.GetProductsForCategory(category);
         }
     }
