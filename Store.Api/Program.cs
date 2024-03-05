@@ -1,7 +1,21 @@
 using Store.Api.Domain;
 using Store.Api.Interfaces;
+using Serilog;
+using Serilog.Events;
+
+
+var name = typeof(Program).Assembly.GetName().Name;
+Log.Logger = new LoggerConfiguration()
+    .MinimumLevel.Override("Microsoft",LogEventLevel.Information)
+    .Enrich.FromLogContext()
+    .Enrich.WithMachineName()
+    .Enrich.WithProperty("Assembly",name)
+    .WriteTo.Console()
+    .CreateLogger();
+
 
 var builder = WebApplication.CreateBuilder(args);
+builder.Host.UseSerilog();
 
 // Add services to the container.
 builder.Services.AddScoped<IProductLogic, ProductLogic>();
