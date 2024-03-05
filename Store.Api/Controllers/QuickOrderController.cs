@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Serilog;
 using Store.Api.ApiModels;
-using Store.Api.Interfaces;
+using Store.Api.Interfaces; 
 
 namespace Store.Api.Controllers
 {
@@ -8,19 +9,17 @@ namespace Store.Api.Controllers
     [Route("[controller]")]
     public class QuickOrderController : ControllerBase
     {
-        private readonly ILogger<QuickOrderController> _logger;
         private readonly IQuickOrderLogic _orderLogic;
 
-        public QuickOrderController(ILogger<QuickOrderController> logger, IQuickOrderLogic orderLogic)
+        public QuickOrderController(IQuickOrderLogic orderLogic)
         {
-            _logger = logger;
             _orderLogic = orderLogic;
         }
 
         [HttpPost]
         public Guid SubmitQuickOrder(QuickOrder orderInfo)
         {
-            _logger.LogInformation($"Submitting order for {orderInfo.Quantity} of {orderInfo.ProductId}.");
+            Log.Information($"Submitting order for {orderInfo.Quantity} of {orderInfo.ProductId}.");
             return _orderLogic.PlaceQuickOrder(orderInfo, 1234); // would get customer id from authN system/User claims
         }
     }

@@ -1,22 +1,21 @@
-﻿using Store.Api.ApiModels;
+﻿using Serilog;
+using Store.Api.ApiModels;
 using Store.Api.Interfaces;
 
 namespace Store.Api.Domain
 {
     public class ProductLogic : IProductLogic
-    {
-        private readonly ILogger<ProductLogic> _logger;
+    { 
         private readonly List<string> _validCategories = new List<string> { "all", "boots", "climbing gear", "kayaks" };
 
 
-        public ProductLogic(ILogger<ProductLogic> logger)
-        {
-            _logger = logger;
+        public ProductLogic( )
+        { 
         }
 
         public IEnumerable<Product> GetProductsForCategory(string category)
         {
-            _logger.LogInformation("Starting logic to get products", category);
+            Log.Information("Starting logic to get products", category);
 
             if (!_validCategories.Any(c => string.Equals(category, c, StringComparison.InvariantCultureIgnoreCase)))
             {
